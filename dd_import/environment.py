@@ -37,6 +37,9 @@ class Environment:
         self.extra_header_2 = os.getenv('DD_EXTRA_HEADER_2')
         self.extra_header_1_value = os.getenv('DD_EXTRA_HEADER_1_VALUE')
         self.extra_header_2_value = os.getenv('DD_EXTRA_HEADER_2_VALUE')
+        self.deduplication_on_engagement = bool(strtobool(os.getenv('DD_DEDUPLICATION_ON_ENGAGEMENT', 'false')))
+        self.engagement_tag = os.getenv('DD_ENGAGEMENT_TAG', None)
+        self.scan_tag = os.getenv('DD_SCAN_TAG', None)
 
     def check_environment_reimport_findings(self):
         error_string = self.check_environment_common()
