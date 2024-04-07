@@ -124,6 +124,7 @@ class Api:
         payload = {'name': self.environment.engagement_name,
                    'product': product,
                    'target_start': self.environment.engagement_target_start,
+                   'target_end': self.environment.engagement_target_end,
                    'deduplication_on_engagement': self.environment.deduplication_on_engagement,
                    'engagement_type': 'CI/CD',
                    'status': 'In Progress'}
@@ -131,13 +132,13 @@ class Api:
             payload['source_code_management_uri'] = self.environment.source_code_management_uri
         if self.environment.engagement_tag is not None:
             payload['tags'] = [self.environment.engagement_tag]
-        if self.environment.engagement_target_end is not None:
-            payload['target_end'] = self.environment.engagement_target_end
 
-            r = requests.post(self.engagement_url,
-                              headers=self.headers,
-                              data=json.dumps(payload),
-                              verify=self.ssl_verification)
+        print(payload)
+
+        r = requests.post(self.engagement_url,
+                          headers=self.headers,
+                          data=json.dumps(payload),
+                          verify=self.ssl_verification)
         r.raise_for_status()
         engagement_data = json.loads(r.text)
         print('New engagement,     id: ', engagement_data['id'])

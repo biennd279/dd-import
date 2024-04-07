@@ -12,7 +12,7 @@ class Environment:
         self.product_type_name = os.getenv('DD_PRODUCT_TYPE_NAME')
         self.engagement_name = os.getenv('DD_ENGAGEMENT_NAME')
         self.engagement_target_start = os.getenv('DD_ENGAGEMENT_TARGET_START', datetime.date.today().isoformat())
-        self.engagement_target_end = os.getenv('DD_ENGAGEMENT_TARGET_END', None)
+        self.engagement_target_end = os.getenv('DD_ENGAGEMENT_TARGET_END', (datetime.date.today() + datetime.timedelta(days=365)).isoformat())
         self.test_name = os.getenv('DD_TEST_NAME')
         self.test_type_name = os.getenv('DD_TEST_TYPE_NAME')
         self.file_name = os.getenv('DD_FILE_NAME')
