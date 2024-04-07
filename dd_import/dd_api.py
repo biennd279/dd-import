@@ -133,8 +133,6 @@ class Api:
         if self.environment.engagement_tag is not None:
             payload['tags'] = [self.environment.engagement_tag]
 
-        print(payload)
-
         r = requests.post(self.engagement_url,
                           headers=self.headers,
                           data=json.dumps(payload),
