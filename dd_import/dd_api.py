@@ -124,7 +124,6 @@ class Api:
         payload = {'name': self.environment.engagement_name,
                    'product': product,
                    'target_start': self.environment.engagement_target_start,
-                   'target_end': self.environment.engagement_target_end,
                    'deduplication_on_engagement': self.environment.deduplication_on_engagement,
                    'engagement_type': 'CI/CD',
                    'status': 'In Progress'}
@@ -132,11 +131,13 @@ class Api:
             payload['source_code_management_uri'] = self.environment.source_code_management_uri
         if self.environment.engagement_tag is not None:
             payload['tags'] = [self.environment.engagement_tag]
+        if self.environment.engagement_target_end is not None:
+            payload['target_end'] = self.environment.engagement_target_end
 
-        r = requests.post(self.engagement_url,
-                          headers=self.headers,
-                          data=json.dumps(payload),
-                          verify=self.ssl_verification)
+            r = requests.post(self.engagement_url,
+                              headers=self.headers,
+                              data=json.dumps(payload),
+                              verify=self.ssl_verification)
         r.raise_for_status()
         engagement_data = json.loads(r.text)
         print('New engagement,     id: ', engagement_data['id'])
@@ -144,8 +145,8 @@ class Api:
 
     def update_engagement(self, engagement):
         if self.environment.build_id is not None or \
-           self.environment.commit_hash is not None or \
-           self.environment.branch_tag is not None:
+                self.environment.commit_hash is not None or \
+                self.environment.branch_tag is not None:
             payload = {'build_id': self.environment.build_id,
                        'commit_hash': self.environment.commit_hash,
                        'branch_tag': self.environment.branch_tag}
@@ -206,8 +207,6 @@ class Api:
         payload = {'scan_date': datetime.date.today().isoformat(),
                    'scan_type': self.environment.test_type_name,
                    'test': test,
-                   'active': self.environment.active,
-                   'verified': self.environment.verified,
                    'push_to_jira': self.environment.push_to_jira,
                    'close_old_findings': self.environment.close_old_findings,
                    'close_old_findings_product_scope': self.environment.close_old_findings_product_scope,
@@ -230,6 +229,10 @@ class Api:
             payload['source_code_management_uri'] = self.environment.source_code_management_uri
         if self.environment.scan_tag is not None:
             payload['tags'] = self.environment.scan_tag
+        if self.environment.active is not None:
+            payload['active'] = self.environment.active.lower() in ['true']
+        if self.environment.verified is not None:
+            payload['verified'] = self.environment.verified.lower() in ['true']
 
         if self.environment.file_name is not None:
             files = {'file': (self.environment.file_name,
@@ -255,8 +258,8 @@ class Api:
     def import_languages(self, product):
         payload = {'product': product}
         files = {'file': (self.environment.file_name,
-                 open(self.environment.file_name, 'rb'),
-                 'application/json', {'Expires': '0'})}
+                          open(self.environment.file_name, 'rb'),
+                          'application/json', {'Expires': '0'})}
 
         response = requests.post(self.import_languages_url,
                                  headers=self.headers_without_json,

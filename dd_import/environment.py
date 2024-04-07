@@ -12,17 +12,18 @@ class Environment:
         self.product_type_name = os.getenv('DD_PRODUCT_TYPE_NAME')
         self.engagement_name = os.getenv('DD_ENGAGEMENT_NAME')
         self.engagement_target_start = os.getenv('DD_ENGAGEMENT_TARGET_START', datetime.date.today().isoformat())
-        self.engagement_target_end = os.getenv('DD_ENGAGEMENT_TARGET_END', '2999-12-31')
+        self.engagement_target_end = os.getenv('DD_ENGAGEMENT_TARGET_END', None)
         self.test_name = os.getenv('DD_TEST_NAME')
         self.test_type_name = os.getenv('DD_TEST_TYPE_NAME')
         self.file_name = os.getenv('DD_FILE_NAME')
-        self.active = os.getenv('DD_ACTIVE', 'True').lower() in ['true']
-        self.verified = os.getenv('DD_VERIFIED', 'True').lower() in ['true']
+        self.active = os.getenv('DD_ACTIVE', None)
+        self.verified = os.getenv('DD_VERIFIED', None)
         self.minimum_severity = os.getenv('DD_MINIMUM_SEVERITY', None)
         self.group_by = os.getenv('DD_GROUP_BY', None)
         self.push_to_jira = os.getenv('DD_PUSH_TO_JIRA', 'False').lower() in ['true']
         self.close_old_findings = os.getenv('DD_CLOSE_OLD_FINDINGS', 'True').lower() in ['true']
-        self.close_old_findings_product_scope = os.getenv('DD_CLOSE_OLD_FINDINGS_PRODUCT_SCOPE', 'False').lower() in ['true']
+        self.close_old_findings_product_scope = os.getenv('DD_CLOSE_OLD_FINDINGS_PRODUCT_SCOPE', 'False').lower() in [
+            'true']
         self.do_not_reactivate = os.getenv('DD_DO_NOT_REACTIVATE', 'False').lower() in ['true']
         self.version = os.getenv('DD_VERSION', None)
         self.endpoint_id = os.getenv('DD_ENDPOINT_ID', None)
